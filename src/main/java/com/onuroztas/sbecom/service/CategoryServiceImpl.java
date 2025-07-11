@@ -1,5 +1,7 @@
 package com.onuroztas.sbecom.service;
 
+import com.onuroztas.sbecom.exceptions.APIException;
+import com.onuroztas.sbecom.exceptions.ResourceNotFoundException;
 import com.onuroztas.sbecom.model.Category;
 import com.onuroztas.sbecom.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void createCategory(Category category) {
+        Category savedCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+        if (savedCategory != null)
+            throw new APIException("Category with the name " + category.getCategoryName() + " already exists.");
         // category.setCategoryId(nextId++);
         categoryRepository.save(category);
     }
@@ -36,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService{
     public String deleteCategory(Long categoryId) {
 
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
         categoryRepository.delete(category);
         return "Category with categoryId: " + categoryId + " deleted successfully.";
@@ -47,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 
         Category savedCategory = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found"));
+                .orElseThrow(() ->new ResourceNotFoundException("Category", "categoryId", categoryId));
 
         category.setCategoryId(categoryId);
         savedCategory = categoryRepository.save(category);
