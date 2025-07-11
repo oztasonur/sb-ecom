@@ -1,6 +1,7 @@
 package com.onuroztas.sbecom.controller;
 
 
+import com.onuroztas.sbecom.config.AppConstants;
 import com.onuroztas.sbecom.model.Category;
 import com.onuroztas.sbecom.payload.CategoryDTO;
 import com.onuroztas.sbecom.payload.CategoryResponse;
@@ -31,8 +32,8 @@ public class CategoryController {
 
     @GetMapping("/public/categories")
     public ResponseEntity<CategoryResponse> getAllCategories(
-            @RequestParam(name = "pageNumber") Integer pageNumber,
-            @RequestParam(name = "pageSize") Integer pageSize) {
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE) Integer pageSize) {
         CategoryResponse categoryResponse = categoryService.getAllCategories(pageNumber, pageSize);
         return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
     }
