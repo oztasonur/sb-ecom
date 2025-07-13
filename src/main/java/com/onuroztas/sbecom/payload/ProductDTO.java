@@ -1,29 +1,18 @@
-package com.onuroztas.sbecom.model;
+package com.onuroztas.sbecom.payload;
 
-import com.onuroztas.sbecom.service.CategoryService;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class ProductDTO {
     private Long productId;
     private String productName;
-    private  String description;
     private String image;
     private Integer quantity;
     private double price;
     private double discount;
     private double specialPrice;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 }
